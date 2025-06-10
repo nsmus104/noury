@@ -1,4 +1,3 @@
-# mysql-pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -8,6 +7,9 @@ spec:
     storage: 2Gi
   accessModes:
   - ReadWriteOnce
-  hostPath:
-    path: /mnt/data/mysql # Make sure this exists on each node or restrict to a node
   persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data/mysql
+  claimRef:
+    name: mysql-pvc
+    namespace: default
