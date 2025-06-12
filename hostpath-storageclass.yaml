@@ -1,0 +1,8 @@
+# hostpath-storageclass.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hostpath-provisioner
+provisioner: kubernetes.io/no-provisioner # This is often used with manually created PVs
+volumeBindingMode: WaitForFirstConsumer # Important for hostpath, delays binding until pod is scheduled
+reclaimPolicy: Delete # Default is Delete, but you might want Retain for manual cleanup
