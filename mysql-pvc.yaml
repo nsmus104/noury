@@ -6,9 +6,8 @@ metadata:
   namespace: default
 spec:
   accessModes:
-  - ReadWriteOnce # This means it can be mounted as read-write by a single node
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi # Request 5 GB of storage. Adjust as needed.
-      storageClassName: hostpath-provisioner
-  # storageClassName: standard # Uncomment and change if you have a specific StorageClass
+      storage: 5Gi # <--- CAREFULLY RETYPE THIS LINE
+  storageClassName: hostpath-provisioner
