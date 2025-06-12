@@ -1,4 +1,4 @@
-# wordpress-deployment.yaml
+# wordpress-deployment.yaml - TEMPORARY DEBUGGING VERSION
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,22 +25,13 @@ spec:
           name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql-service # <--- IMPORTANT: This MUST match the name of your MySQL Service (which you should create as 'mysql-service')
+          value: mysql-service # This MUST match the name of your MySQL Service
         - name: WORDPRESS_DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secrets # Your Secret name for database credentials
-              key: wordpress-db-user
+          value: user # <--- HARDCODED FOR DEBUGGING
         - name: WORDPRESS_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secrets
-              key: wordpress-db-password
+          value: password # <--- HARDCODED FOR DEBUGGING
         - name: WORDPRESS_DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secrets
-              key: wordpress-db-name
+          value: nsm # <--- HARDCODED FOR DEBUGGING
         # Optional: If you want to set the WordPress site URL explicitly (uncomment and adjust if needed)
         # - name: WORDPRESS_URL
         #   value: http://10.5.1.6:30089 # Or your domain name if you use Ingress
