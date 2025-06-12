@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: wordpress
   strategy:
-    type: Recreate
+    type: Recreate # Ensures only one WordPress pod is running at a time during updates
   template:
     metadata:
       labels:
@@ -25,11 +25,11 @@ spec:
           name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql-service # <--- IMPORTANT: This MUST match the name of your MySQL Service
+          value: mysql-service # <--- IMPORTANT: This MUST match the name of your MySQL Service (which you should create as 'mysql-service')
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
-              name: mysql-secrets
+              name: mysql-secrets # Your Secret name for database credentials
               key: wordpress-db-user
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
@@ -41,6 +41,6 @@ spec:
             secretKeyRef:
               name: mysql-secrets
               key: wordpress-db-name
-        # Optional: If you want to set the site URL explicitly
+        # Optional: If you want to set the WordPress site URL explicitly (uncomment and adjust if needed)
         # - name: WORDPRESS_URL
         #   value: http://10.5.1.6:30089 # Or your domain name if you use Ingress
