@@ -1,12 +1,19 @@
+# mysql-pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv
+  name: mysql-pv-volume
+  labels:
+    type: local
 spec:
+  storageClassName: hostpath-provisioner # MUST match the StorageClass name
   capacity:
-    storage: 2Gi
+    storage: 5Gi # MUST be at least the size requested by the PVC
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteOnce # MUST match the access mode requested by the PVC
   hostPath:
-    path: /mnt/data/mysql
-  persistentVolumeReclaimPolicy: Retain
+    path: "/mnt/data/mysql"
+      # <--- IMPORTANT: This is a path on your Kubernetes NODE's filesystem.
+      # Ensure this path exists and is writable on the node where the pod will run.
+      # You might need to create it manually on your K8s node: sudo mkdir -p /mnt/data/mysql
+      # sudo chmod 777 /mnt/data/mysql
