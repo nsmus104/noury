@@ -10,4 +10,5 @@ spec:
   resources:
     requests:
       storage: 5Gi # Request 5 GB of storage. Adjust as needed.
+      storageClassName: hostpath-provisioner
   # storageClassName: standard # Uncomment and change if you have a specific StorageClass
