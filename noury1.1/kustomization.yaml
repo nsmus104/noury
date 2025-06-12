@@ -1,0 +1,7 @@
+namespace: default
+
+resources:
+- mysql-deployment.yaml
+- mysql-service.yaml
+- wordpress-deployment.yaml
+- wordpress-service.yaml

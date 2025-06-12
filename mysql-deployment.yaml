@@ -1,24 +1,17 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pvc
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
+# mysql-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
   namespace: default
+  labels:
+    app: mysql
 spec:
   selector:
     matchLabels:
       app: mysql
+  strategy:
+    type: Recreate # Ensures only one MySQL pod is running at a time (important for single-instance DB)
   template:
     metadata:
       labels:
@@ -26,18 +19,35 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: wordpress123
-        - name: MYSQL_DATABASE
-          value: wordpress
+        image: mysql:5.7 # Using 5.7 as per your logs, you can use a newer version if desired (e.g., mysql:8.0)
         ports:
         - containerPort: 3306
+          name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: mysql-root-password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: wordpress-db-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: wordpress-db-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: wordpress-db-name
         volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql # Default data directory for MySQL
       volumes:
-      - name: mysql-storage
+      - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pvc

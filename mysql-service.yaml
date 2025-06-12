@@ -1,13 +1,16 @@
+# mysql-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
   namespace: default
+  labels:
+    app: mysql
 spec:
   selector:
-    app: mysql
+    app: mysql # Selects pods with the label app: mysql
   ports:
   - protocol: TCP
-    port: 3306
-    targetPort: 3306
-  type: ClusterIP
+    port: 3306 # The port the Service will listen on
+    targetPort: 3306 # The port the MySQL container exposes
+  type: ClusterIP # Only accessible from within the cluster

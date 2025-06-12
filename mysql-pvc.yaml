@@ -1,11 +1,13 @@
+# mysql-pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
+  namespace: default
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteOnce # This means it can be mounted as read-write by a single node
   resources:
     requests:
-      storage: 2Gi
-  volumeName: mysql-pv
+      storage: 5Gi # Request 5 GB of storage. Adjust as needed.
+  # storageClassName: standard # Uncomment and change if you have a specific StorageClass

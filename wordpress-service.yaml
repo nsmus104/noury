@@ -1,13 +1,19 @@
+# wordpress-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
-  namespace: default 
-spec:
-  type: NodePort
-  selector:
+  name: wordpress-service
+  namespace: default
+  labels:
     app: wordpress
+spec:
+  selector:
+    app: wordpress # Selects pods with the label app: wordpress
+  type: NodePort # Exposes the service on a port on each node's IP
   ports:
-  - port: 80
-    targetPort: 80
+  - protocol: TCP
+    port: 80 # The port the Service will listen on (inside the cluster)
+    targetPort: 80 # The port the WordPress container exposes
     nodePort: 30089
+      # The specific port on the node to expose (your original port)
+      # NodePort must be in the range 30000-32767
